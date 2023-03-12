@@ -3,5 +3,3 @@ refs = {
   searchButton: document.querySelector('button[type=submit]'),
 };
 console.log(refs.searchButton);
-
-// refs.searchButton.
