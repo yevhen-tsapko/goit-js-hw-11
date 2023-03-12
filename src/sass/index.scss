@@ -1,0 +1,24 @@
+.info {
+  display: flex;
+  justify-content: space-between;
+}
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.photo-card {
+  width: 24%;
+}
+form {
+  background-color: #431793;
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+input {
+  // display: block;
+  margin-left: 40%;
+  // margin-right: auto;
+  // margin-left: auto;
+}
