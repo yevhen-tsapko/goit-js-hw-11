@@ -1,18 +1,33 @@
 .info {
   display: flex;
   justify-content: space-between;
+  color: #000;
 }
+
 .gallery {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
 }
-
-.photo-card {
+.gallery__item {
   width: 24.2%;
-  height: 20%;
+  // height: 70vh;
+  // height: 20%;
+  // height: 40px;
+}
+.photo-card {
+  // height: 150px;
+}
+body {
+  box-sizing: border-box;
+}
+img {
+  height: 25vh;
+  overflow: hidden;
+  object-fit: cover;
 }
 a {
+  text-decoration: none;
   display: block;
 }
 form {
@@ -22,18 +37,14 @@ form {
   margin-bottom: 10px;
 }
 input {
-  // display: block;
   margin-left: 40%;
-  // margin-right: auto;
-  // margin-left: auto;
 }
 .info-item {
   text-align: center;
 }
+
 .load-more {
   text-align: center;
-}
-.load-more {
   display: none;
 }
 button.visible {

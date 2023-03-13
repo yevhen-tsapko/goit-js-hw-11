@@ -1,6 +1,13 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
+// import {
+//   gallery,
+//   getImg,
+//   expandImage,
+//   onImgClick,
+//   onEscapeClick,
+// } from './simpleLightBox';
 const axios = require('axios/dist/browser/axios.cjs');
 
 const refs = {
@@ -13,6 +20,7 @@ const key = '34336743-d2a2c454c2eb7df7235afc475';
 let page = 1;
 let searchWord = '';
 let totalPages = 0;
+let lightbox;
 
 function onSubmit(evt) {
   page = 1;
@@ -31,8 +39,14 @@ function onSubmit(evt) {
       } else {
         Notify.success(`Hooray! We found ${totalHits} images.`);
         refs.gallery.innerHTML = createMarkup(hits);
+        lightbox = new SimpleLightbox('.gallery a', {});
+        // make AddMoreButton visible
         refs.loadMore.classList.add('visible');
-        refs.loadMore.addEventListener('click', onClickAddMore);
+        // refs.loadMore.addEventListener('click', onClickAddMore);
+        window.addEventListener('scroll', function () {
+          document.getElementById('showScroll').innerHTML =
+            window.pageYOffset + 'px';
+        });
       }
     });
 }
@@ -46,8 +60,14 @@ function onClickAddMore() {
     console.log('totalPages', totalPages);
     fetchSearch(searchWord).then(hits => {
       refs.gallery.insertAdjacentHTML('beforeend', createMarkup(hits.hits));
-      refs.loadMore.classList.add('visible');
-      refs.loadMore.addEventListener('click', onClickAddMore);
+      lightbox.refresh();
+      const { height: cardHeight } =
+        refs.gallery.firstElementChild.getBoundingClientRect();
+
+      window.scrollBy({
+        top: cardHeight * 2,
+        behavior: 'smooth',
+      });
     });
   }
 }
@@ -59,10 +79,10 @@ function hideAddMoreButton() {
 function fetchSearch(searchWord) {
   return axios
     .get(
-      `https:pixabay.com/api/?key=${key}&q=${searchWord}&image_type=photo&orientation=horizontal&safeseach=true&page=${page}&per_page=40`
+      `https:pixabay.com/api/?key=${key}&q=${searchWord}&image_type=photo&orientation=horizontal&safeseach=true&page=${page}&per_page=40&min_height=100`
     )
     .then(response => {
-      console.log(response);
+      // console.log(response);
       return response.data;
     })
     .catch(error => {
@@ -84,7 +104,7 @@ function createMarkup(cards) {
         comments,
         downloads,
       }) =>
-        `<div class="photo-card">
+        `<a class="gallery__item" href="${largeImageURL}"><div class="photo-card">
   <img src="${webformatURL}" alt="${tags}" width=100% loading="lazy" />
   <div class="info">
     <p class="info-item">
@@ -100,7 +120,7 @@ function createMarkup(cards) {
       <b>Downloads</b> ${downloads}
     </p>
   </div>
-</div>`
+</div></a>`
     )
     .join('');
 }

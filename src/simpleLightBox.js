@@ -5,20 +5,12 @@ export let gallery = new SimpleLightbox('.gallery a');
 export function onImgClick(evt) {
   evt.preventDefault();
   getImg(evt);
-  expandImage(evt);
+  // expandImage(evt);
 }
 export function getImg(evt) {
   if (evt.target.nodeName !== 'IMG') return;
-  evt.target.src = evt.target.dataset.source;
-}
-export function expandImage(evt) {
-  instance = basicLightbox.create(`
-  <img
-    src="${evt.target.dataset.source}"
-    alt="${evt.target.description}"
-      />
-    `);
-  instance.show();
+  console.log(evt.target.closest('a').href);
+  gallery;
   window.addEventListener('keydown', onEscapeClick);
 }
 export function onEscapeClick(evt) {
