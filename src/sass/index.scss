@@ -9,16 +9,33 @@
 }
 
 .photo-card {
-  width: 24%;
+  width: 24.2%;
+  height: 20%;
+}
+a {
+  display: block;
 }
 form {
   background-color: #431793;
   padding-top: 7px;
   padding-bottom: 7px;
+  margin-bottom: 10px;
 }
 input {
   // display: block;
   margin-left: 40%;
   // margin-right: auto;
   // margin-left: auto;
+}
+.info-item {
+  text-align: center;
+}
+.load-more {
+  text-align: center;
+}
+.load-more {
+  display: none;
+}
+button.visible {
+  display: block;
 }
