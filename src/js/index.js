@@ -10,6 +10,12 @@ const refs = {
   loadMore: document.querySelector('.load-more'),
   gallery: document.querySelector('.gallery'),
 };
+const notifyOptions = {
+  width: '360px',
+  timeout: 3000,
+  position: 'center-center',
+  fontSize: '18px',
+};
 
 let page = 1;
 let searchWord = '';
@@ -28,10 +34,11 @@ function onSubmit(evt) {
         refs.gallery.innerHTML = '';
         // hideAddMoreButton();
         Notify.failure(
-          'Sorry, there are no images matching your search query. Please try again.'
+          'Sorry, there are no images matching your search query. Please try again.',
+          notifyOptions
         );
       } else {
-        Notify.success(`Hooray! We found ${totalHits} images.`);
+        Notify.success(`Hooray! We found ${totalHits} images.`, notifyOptions);
         refs.gallery.innerHTML = createMarkup(hits);
         page += 1;
         lightbox = addLightBox();
@@ -49,7 +56,8 @@ function addElements() {
   if (page > totalPages) {
     // hideAddMoreButton();
     Notify.failure(
-      "We're sorry, but you've reached the end of search results."
+      "We're sorry, but you've reached the end of search results.",
+      notifyOptions
     );
   } else {
     fetchSearch(searchWord, page).then(({ hits }) => {
