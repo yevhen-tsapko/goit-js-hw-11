@@ -11,13 +11,8 @@
 }
 .gallery__item {
   width: 24.2%;
-  // height: 70vh;
-  // height: 20%;
-  // height: 40px;
 }
-.photo-card {
-  // height: 150px;
-}
+
 body {
   box-sizing: border-box;
 }
@@ -49,4 +44,7 @@ input {
 }
 button.visible {
   display: block;
+  margin: 0 auto;
+  padding: 5px 10px;
+  background-color: #2e29be;
 }
