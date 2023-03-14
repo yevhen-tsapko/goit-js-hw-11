@@ -1,13 +1,8 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-// import {
-//   gallery,
-//   getImg,
-//   expandImage,
-//   onImgClick,
-//   onEscapeClick,
-// } from './simpleLightBox';
+import ScrollWatch from 'scrollwatch';
+
 const axios = require('axios/dist/browser/axios.cjs');
 
 const refs = {
@@ -21,6 +16,7 @@ let page = 1;
 let searchWord = '';
 let totalPages = 0;
 let lightbox;
+let swInstance;
 
 function onSubmit(evt) {
   page = 1;
@@ -32,7 +28,7 @@ function onSubmit(evt) {
       totalPages = Math.ceil(totalHits / 40);
       if (hits.length === 0) {
         refs.gallery.innerHTML = '';
-        hideAddMoreButton();
+        // hideAddMoreButton();
         Notify.failure(
           'Sorry, there are no images matching your search query. Please try again.'
         );
@@ -41,50 +37,54 @@ function onSubmit(evt) {
         refs.gallery.innerHTML = createMarkup(hits);
         lightbox = new SimpleLightbox('.gallery a', {});
         // make AddMoreButton visible
-        refs.loadMore.classList.add('visible');
-        // refs.loadMore.addEventListener('click', onClickAddMore);
-        window.addEventListener('scroll', function () {
-          document.getElementById('showScroll').innerHTML =
-            window.pageYOffset + 'px';
+        // refs.loadMore.classList.add('visible');
+        // refs.loadMore.addEventListener('click', addElements);
+
+        swInstance = new ScrollWatch({
+          watch: 'a',
+          infiniteScroll: true,
+          infiniteOffset: 200,
+          onInfiniteYInView: addElements,
         });
       }
     });
 }
-function onClickAddMore() {
+
+// function addElements() {
+//   onClickAddMore();
+//  }
+
+function addElements() {
   if (page > totalPages) {
-    hideAddMoreButton();
+    // hideAddMoreButton();
     Notify.failure(
       "We're sorry, but you've reached the end of search results."
     );
   } else {
-    console.log('totalPages', totalPages);
     fetchSearch(searchWord).then(hits => {
       refs.gallery.insertAdjacentHTML('beforeend', createMarkup(hits.hits));
       lightbox.refresh();
-      const { height: cardHeight } =
-        refs.gallery.firstElementChild.getBoundingClientRect();
+      swInstance.refresh();
+      // const { height: cardHeight } =
+      //   refs.gallery.firstElementChild.getBoundingClientRect();
 
-      window.scrollBy({
-        top: cardHeight * 2,
-        behavior: 'smooth',
-      });
+      // window.scrollBy({
+      //   top: cardHeight * 2,
+      //   behavior: 'smooth',
+      // });
     });
   }
 }
-function hideAddMoreButton() {
-  console.log('HIDing');
-  refs.loadMore.classList.remove('visible');
-  refs.loadMore.removeEventListener('click', onClickAddMore);
-}
+// function hideAddMoreButton() {
+//   refs.loadMore.classList.remove('visible');
+//   refs.loadMore.removeEventListener('click', onClickAddMore);
+// }
 function fetchSearch(searchWord) {
   return axios
     .get(
       `https:pixabay.com/api/?key=${key}&q=${searchWord}&image_type=photo&orientation=horizontal&safeseach=true&page=${page}&per_page=40&min_height=100`
     )
-    .then(response => {
-      // console.log(response);
-      return response.data;
-    })
+    .then(response => response.data)
     .catch(error => {
       console.log(error);
     });
