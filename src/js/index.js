@@ -3,7 +3,6 @@ import ScrollWatch from 'scrollwatch';
 import addLightBox from './simpleLightBox';
 import fetchSearch from './fetchSeach';
 import createMarkup from './createMarkup';
-import scrollWatch from './scrollWatch';
 
 const refs = {
   form: document.querySelector('.search-form'),
