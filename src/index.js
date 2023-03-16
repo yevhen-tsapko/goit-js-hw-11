@@ -22,37 +22,38 @@ let searchWord = '';
 let totalPages = 0;
 let swInstance;
 
-function onSubmit(evt) {
+async function onSubmit(evt) {
   page = 1;
   evt.preventDefault();
-  searchWord = evt.currentTarget.elements.searchQuery.value;
+  searchWord = evt.currentTarget.elements.searchQuery.value.trim();
+  if (!searchWord) {
+    return;
+  }
 
-  if (searchWord)
-    fetchSearch(searchWord, page).then(({ hits, totalHits }) => {
-      totalPages = Math.ceil(totalHits / 40);
-      if (hits.length === 0) {
-        refs.gallery.innerHTML = '';
-        // hideAddMoreButton();
-        Notify.failure(
-          'Sorry, there are no images matching your search query. Please try again.',
-          notifyOptions
-        );
-      } else {
-        Notify.success(`Hooray! We found ${totalHits} images.`, notifyOptions);
-        refs.gallery.innerHTML = createMarkup(hits);
-        page += 1;
-        lightbox = addLightBox();
+  const { hits, totalHits } = await fetchSearch(searchWord, page);
+  totalPages = Math.ceil(totalHits / 40);
+  if (hits.length === 0) {
+    refs.gallery.innerHTML = '';
+    // hideAddMoreButton();
+    Notify.failure(
+      'Sorry, there are no images matching your search query. Please try again.',
+      notifyOptions
+    );
+  } else {
+    Notify.success(`Hooray! We found ${totalHits} images.`, notifyOptions);
+    refs.gallery.innerHTML = createMarkup(hits);
+    page += 1;
+    lightbox = addLightBox();
 
-        swInstance = new ScrollWatch({
-          infiniteScroll: true,
-          infiniteOffset: 200,
-          onInfiniteYInView: addElements,
-        });
-      }
+    swInstance = new ScrollWatch({
+      infiniteScroll: true,
+      infiniteOffset: 200,
+      onInfiniteYInView: addElements,
     });
+  }
 }
 
-function addElements() {
+async function addElements() {
   if (page > totalPages) {
     // hideAddMoreButton();
     Notify.failure(
@@ -60,19 +61,11 @@ function addElements() {
       notifyOptions
     );
   } else {
-    fetchSearch(searchWord, page).then(({ hits }) => {
-      refs.gallery.insertAdjacentHTML('beforeend', createMarkup(hits));
-      page += 1;
-      lightbox.refresh();
-      swInstance.refresh();
-      // const { height: cardHeight } =
-      //   refs.gallery.firstElementChild.getBoundingClientRect();
-
-      // window.scrollBy({
-      //   top: cardHeight * 2,
-      //   behavior: 'smooth',
-      // });
-    });
+    const { hits } = await fetchSearch(searchWord, page);
+    refs.gallery.insertAdjacentHTML('beforeend', createMarkup(hits));
+    page += 1;
+    lightbox.refresh();
+    swInstance.refresh();
   }
 }
 
