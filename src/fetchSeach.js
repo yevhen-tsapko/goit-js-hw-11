@@ -1,7 +1,6 @@
 // const axios = require('axios/dist/browser/axios.cjs');
 import axios from 'axios';
 const key = '34336743-d2a2c454c2eb7df7235afc475';
-// let page = 1;
 
 export default async function fetchSearch(searchWord, page) {
   return await axios
@@ -10,6 +9,6 @@ export default async function fetchSearch(searchWord, page) {
     )
     .then(response => response.data)
     .catch(error => {
-      console.log(error);
+      console.log('error', error);
     });
 }
