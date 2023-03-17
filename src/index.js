@@ -21,6 +21,7 @@ let page = 1;
 let searchWord = '';
 let totalPages = 0;
 let swInstance;
+let lightbox;
 
 async function onSubmit(evt) {
   page = 1;
