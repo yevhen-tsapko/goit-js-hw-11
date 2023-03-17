@@ -1,5 +1,5 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
-import ScrollWatch from 'scrollwatch';
+import ScrollWatch from './scrollwatch';
 import addLightBox from './simpleLightBox';
 import fetchSearch from './fetchSeach';
 import createMarkup from './createMarkup';
