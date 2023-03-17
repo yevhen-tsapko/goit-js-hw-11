@@ -12,7 +12,7 @@ const refs = {
 };
 const notifyOptions = {
   width: '360px',
-  timeout: 3000,
+  timeout: 2000,
   position: 'center-center',
   fontSize: '18px',
 };

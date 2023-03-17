@@ -1,4 +1,3 @@
-// const axios = require('axios/dist/browser/axios.cjs');
 import axios from 'axios';
 const key = '34336743-d2a2c454c2eb7df7235afc475';
 
