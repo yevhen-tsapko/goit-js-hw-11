@@ -61,6 +61,7 @@ async function addElements() {
       "We're sorry, but you've reached the end of search results.",
       notifyOptions
     );
+    swInstance.pauseInfiniteScroll();
   } else {
     const { hits } = await fetchSearch(searchWord, page);
     refs.gallery.insertAdjacentHTML('beforeend', createMarkup(hits));
